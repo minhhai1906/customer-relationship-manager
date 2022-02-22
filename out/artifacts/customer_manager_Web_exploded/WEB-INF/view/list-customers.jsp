@@ -10,6 +10,7 @@
 <html>
 <head>
     <title>List Customer</title>
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
 </head>
 <body>
     <div id="wrapper">
@@ -18,20 +19,42 @@
         </div>
     </div>
     <div id="container">
-        <div id="conten">
+        <div id="content">
+<%--            <input type="button"
+                        value="Add Customer"
+                        onclick="window.location.href='showFormForAdd'; return false;"
+                        class="add-button"/>--%>
+            <button type="submit"
+                    onclick="window.location.href='showFormForAdd'; return false;"
+                    class="add-button">
+                Add Customer
+            </button>
 <%--            add html table--%>
             <table>
                 <tr>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email Name</th>
+                    <th>Action</th>
                 </tr>
 <%--                loop and print customers--%>
                 <c:forEach var="tempCustomer" items="${customers}">
+                    <c:url var="updateLink" value="/customer/showFormForUpdate">
+                        <c:param name="customerId" value="${tempCustomer.id}" />
+                    </c:url>
+                    <c:url var="deleteLink" value="/customer/delete">
+                        <c:param name="customerId" value="${tempCustomer.id}" />
+                    </c:url>
+
                     <tr>
                         <td>${tempCustomer.firstName}</td>
                         <td>${tempCustomer.lastName}</td>
                         <td>${tempCustomer.email}</td>
+                        <td>
+                            <a href="${updateLink}">Update</a>
+                            <span>|</span>
+                            <a href="${deleteLink}" onclick="if (!(confirm('Are you sure you want to delete this customer'))) return false">Delete</a>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>
